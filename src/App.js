@@ -1,14 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
 import { useDispatch } from 'react-redux'
 import { Routes, Route } from 'react-router-dom';
 
 import './App.css';
-import Navigation from './routes/navigation/navigation.component';
-import Shop from './routes/shop/shop.component';
-import Home from './routes/home/hompage.component';
-import SignInAndSignUp from './routes/sign-in-and-sign-up/sign-in-and-sign-up.components';
-import Checkout from './routes/checkout/checkout.component';
+
+import Spinner from './components/spinner/spinner.component';
 import { checkUserSession } from './store/user/user.action'
+
+const Home = lazy(() => { import('./routes/home/hompage.component') })
+const Navigation = lazy(() => { import('./routes/navigation/navigation.component') })
+const Shop = lazy(() => { import('./routes/shop/shop.component') });
+const SignInAndSignUp = lazy(() => { import('./routes/sign-in-and-sign-up/sign-in-and-sign-up.components') })
+const Checkout = lazy(() => { import('./routes/checkout/checkout.component') })
 
 function App() {
   const dispatch = useDispatch()
@@ -18,16 +21,18 @@ function App() {
   });
 
   return (
-    <div className="App">
-      <Routes>
-        <Route path='/' element={<Navigation />} >
-          <Route path='/' element={<Home />} />
-          <Route path='/shop/*' element={<Shop />} />
-          <Route path='/signin' element={<SignInAndSignUp />} />
-          <Route path='/checkout' element={<Checkout />} />
-        </Route>
-      </Routes>
-    </div>
+    <Suspense fallback={<Spinner />}>
+      <div className="App">
+        <Routes>
+          <Route path='/' element={<Navigation />} >
+            <Route path='/' element={<Home />} />
+            <Route path='/shop/*' element={<Shop />} />
+            <Route path='/signin' element={<SignInAndSignUp />} />
+            <Route path='/checkout' element={<Checkout />} />
+          </Route>
+        </Routes>
+      </div>
+    </Suspense>
   );
 }
 
