@@ -23,4 +23,17 @@
       cursor: pointer;
     }
   }
+
+  @media screen and (max-width: 800px){
+    height: 60px;
+    padding: 10px;
+    margin-bottom: 20px;
+    .logo-container{
+      width: 50px;
+      padding: 0;
+    }
+    .options{
+      width: 80%;
+    }
+  }
 }
